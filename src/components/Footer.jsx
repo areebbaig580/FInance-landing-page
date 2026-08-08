@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ArrowUpRight, Star } from "lucide-react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const TrustpilotIcon = ({ className = "" }) => (
   <svg viewBox="0 0 24 24" className={className} fill="#00B67A" xmlns="http://www.w3.org/2000/svg">
@@ -129,11 +131,38 @@ function FooterLink({ label, external }) {
     </li>
   );
 }
+const links = [
+  {
+    label: "GitHub",
+    link: "https://github.com/areebbaig580"
+  },
+  {
+    label: "areebbaig580@gmail.com",
+    link: "mailto:areebbaig580@gmail.com"
+  },
+  {
+    label: "Portfolio",
+    link: "https://portfolio-blond-sigma-56.vercel.app/"
+  }
+];
 
 export default function Footer() {
+  const footerRef = useRef();
+  useGSAP(()=>{
+
+    gsap.from(".footer",{
+      y: 50,
+      duration: 0.7,
+      opacity: 0,
+      scrollTrigger:{
+        trigger: footerRef.current,
+        start: "top 70%",
+      }
+    })
+   }, {scope: footerRef})
   return (
-    <footer className="w-full bg-[#FAFAF9] font-sans">
-      <div className="mx-auto max-w-7xl px-8 py-14">
+    <footer className="w-full bg-[#FAFAF9] font-sans overflow-y-hidden" ref={footerRef}>
+      <div className="mx-auto max-w-7xl px-8 py-14 footer">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {linkColumns.map((col) => (
             <div key={col.title}>
@@ -202,16 +231,16 @@ export default function Footer() {
       <div className="border-t border-gray-800/10 bg-[#111142]">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-8 py-5 sm:flex-row">
           <p className="text-[13px] text-gray-300">
-            © Vaulta Finance 2026. All right reserved
+            © Areeb baig 2026. All right reserved
           </p>
           <div className="flex items-center gap-6">
-            {["Privacy Policy", "Terms of Use", "Disclosure"].map((label) => (
+            {links.map((l, index) => (
               <a
-                key={label}
-                href="#"
+                key={index}
+                href={l.link}
                 className="text-[13px] text-gray-300 transition-colors duration-150 hover:text-white"
               >
-                {label}
+                {l.label}
               </a>
             ))}
           </div>
